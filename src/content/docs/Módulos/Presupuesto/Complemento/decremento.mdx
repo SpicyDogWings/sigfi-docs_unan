@@ -1,0 +1,125 @@
+---
+title: Decremento de presupuestos
+description: Decremento del presupuesto Inicial y Complemento.
+---
+import { Steps } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+
+El módulo de `presupuesto complemento decremento` funciona para ejercer decrementos 
+sobre los presupuestos Iniciales y complementarios, más especificamente a los 
+artículos que poseen las actividades de los presupuestos.
+
+## Uso
+El uso de este módulo es muy sencillo. Lo único que se requiere es saber a que se le desea decrementar.
+
+### Proceso de decremento
+Esta es una funcionalidad que permite decrementar la cantidad y precio de los artículos
+que contiene un presupuesto *Inicial* o *Presupuesto Complemento*
+
+<Steps>
+1. **Ingresar a la vista de presupuesto complemento.**
+
+    A través del menú: `Presupuesto > Presupuesto complemento`
+
+2. **Rellenar los campos por defecto**
+
+    Seleccionar un año y luego un presupuesto(orgánica) en los campos de arriba a la derecha.
+    Posterior mente le damos a **- Nuevo Decremento**
+
+3. **Buscar los artículos a decrementar**
+
+    Los pasos y la vista es similar a si queremos realizar un presupuesto de 
+    tipo complemento.
+    Como verá el **tipo distribución** tiene por defecto seleccionada *Decremento*. 
+    Luego se debe seleccionar: 
+
+    - Actividad
+    - Mes
+
+    Si lo que se desea es realizar un **complemento** debe regresar a la vista anterior y dale a **Nuevo Presupuesto**.
+
+    Una vez seleccionados los 2 campos se nos mostrará una tabla, con datos o no,
+    de los artículos de los presupuestos iniciales o complementarios.
+
+    Las columnas son las siguiente:
+    - Artículos
+    - Tipo (nuevo)
+    - Económicas
+    - Cantidad
+    - Unidad de Medida
+    - Precio
+    - Decremento Cantidad (nuevo)
+    - Decremento Precio (nuevo)
+    - Acciones
+
+4. **Guardar el decremento**
+
+    Una vez la cantidad de decremento introducida en el campo se puede hacer *click* en el
+    icono de guardado de la columna **acciones**. Luego solo esperamos a que guarde y la tabla
+    se actualizará en sus valores.
+
+    Repetir el proceso las veces que desee.
+    
+</Steps>
+
+## Que hace realmente
+
+Este módulos esta pensado para resolver problemas de presupuesto. En casos en donde el presupuesto no ajusta y 
+se necesita decrementarle. Sin embargo no se puede crear un nuevo presupuesto y ya está, para ello se creo el
+módulos de **decrementos**, para ejercer estos movimientos sobre los presupuestos y quedarnos con un historial de lo que ocurre.
+
+### ¿Cómo afecta al presupuesto?
+
+Los decrementos no se hacen a nivel de monto del presupuesto, sino a nivel de los artículos de las actividades
+de los presupuestos.
+
+Si un artículos fue presupuestado con una cantidad/precio, el decremento se le aplicará a dicho artículo y se guardará
+un uegistro de ese movimiento. Esto hará que afecte directamente al presupuesto sin perder en el camino el rastro del
+dinero en el proceso.
+
+## Restricciones
+Se deben tener en cuenta las siguientes restricciones para guardar los decrementos
+
+1. Si el campo **cantidad** o **precio** equivalen a 0, el decremento no se realizará.
+
+2. Si al decrementar el campo **cantidad** o **precio** terminan en un valor a 0, el otro tomará 
+ese valor automaticamente. En otras palabras si `cantidad = 0 = precio` y en sentido inverso
+
+3. No se puede decrementar con valores menores a 0 o negativos, ejemplo de ellos, -1, -100 entre otros.
+
+## Ejemplo
+Un ejemplo breve de como funciona el decremento en los artículos presupuestados
+
+Sabiendo que:
+`dc = decremento_cantidad` y que `dp = decremento_precio`
+
+Con los valores:
+```
+cantidad = 5
+precio = 100
+dc = 3
+dp = 50
+```
+El valor original debería ser la `cantidad * precio`
+```
+total = 5 * 100
+total = 500
+```
+El nuevo valor debería ser la `(cantidad - decremento_cantidad) *
+(precio - decremento_precio)`
+```
+total = (5 - 3) * (100 - 50)
+total = 2 * 50
+total = 100
+```
+
+## Notas
+- En la parte de abajo a la izquierda se mostrarán ciertos datos de utilidad como lo son los decrementos de la actividad
+  seleccionada en:
+    - El año
+    - El mes
+
+## Informe
+Para más información del reporte de este módulo consultar:
+    <LinkCard title="Reporte de decrementos en presupuestos" href="/módulos/reportes/complemento/decremento" />
+
